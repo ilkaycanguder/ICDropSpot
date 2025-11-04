@@ -12,5 +12,7 @@ class Role(Base):
     name: Mapped[str] = mapped_column(String(64), nullable=False)  # "admin", "user" vb.
 
     users: Mapped[list["User"]] = relationship(
-        secondary="user_roles", back_populates="roles"
+        "User",
+        secondary="user_roles",
+        back_populates="roles",
     )

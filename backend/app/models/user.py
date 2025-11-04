@@ -1,6 +1,11 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Boolean, DateTime, func, UniqueConstraint, Index
 from app.models.base import Base
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.models.role import Role
+    from app.models.user_role import UserRole
 
 class User(Base):
     __tablename__ = "users"
@@ -16,5 +21,8 @@ class User(Base):
     created_at: Mapped[DateTime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
     roles: Mapped[list["Role"]] = relationship(
-        secondary="user_roles", back_populates="users", lazy="joined"
+        "Role",
+        secondary="user_roles",
+        back_populates="users",
+        lazy="joined",
     )
