@@ -1,4 +1,8 @@
-export type User = { id: number; email: string; full_name?: string | null };
+export type User = { id: number; email: string; full_name?: string | null; roles?: string[] };
+
+export function isAdmin(user: User | null): boolean {
+  return user?.roles?.includes("admin") ?? false;
+}
 
 const KEY = "icdropspot:user";
 

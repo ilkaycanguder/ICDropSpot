@@ -19,7 +19,7 @@ export default function AuthPage() {
   async function signup() {
     setLoading(true); setMsg("");
     try {
-      const u = await apiPost<{ id:number; email:string; full_name?:string }>("/api/v1/auth/signup", { email, full_name: name });
+      const u = await apiPost<{ id:number; email:string; full_name?:string; roles?:string[] }>("/api/v1/auth/signup", { email, full_name: name });
       saveUser(u); setMsg("Giriş başarılı, yönlendiriliyor...");
       setTimeout(() => router.push("/drops"), 500);
     } catch (e: any) {
