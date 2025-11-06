@@ -23,10 +23,10 @@ def run():
             s.commit()
             s.refresh(admin)
 
-        # Admin kullanıcısını oluştur
-        u = s.scalar(select(User).where(User.email == "admin@icdropspot.local"))
+        # Admin kullanıcısını oluştur (geçerli domain ile)
+        u = s.scalar(select(User).where(User.email == "admin@example.com"))
         if not u:
-            u = User(email="admin@icdropspot.local", full_name="Admin", is_active=True)
+            u = User(email="admin@example.com", full_name="Admin", is_active=True)
             s.add(u)
             s.commit()
             s.refresh(u)

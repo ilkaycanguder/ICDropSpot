@@ -1,11 +1,13 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from sqlalchemy import select
 from app.models.user import User
 from app.models.role import Role
 from app.models.user_role import UserRole
 
 def list_users(db: Session):
-    return db.execute(select(User)).scalars().all()
+    return db.execute(
+        select(User).options(joinedload(User.roles))
+    ).unique().scalars().all()
 
 def get_by_email(db: Session, email: str):
     return db.scalar(select(User).where(User.email == email))
