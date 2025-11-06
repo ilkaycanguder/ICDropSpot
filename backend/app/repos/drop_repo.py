@@ -12,5 +12,6 @@ def list_active_drops(db: Session):
         .where(Drop.ends_at >= now)
     )
     return db.execute(stmt).scalars().all()
-
+def get_drop_by_id(db: Session, drop_id: int):
+    return db.scalar(select(Drop).where(Drop.id == drop_id))
 

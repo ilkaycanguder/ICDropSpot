@@ -12,6 +12,9 @@ def list_users(db: Session):
 def get_by_email(db: Session, email: str):
     return db.scalar(select(User).where(User.email == email))
 
+def get_user_by_id(db: Session, user_id: int):
+    return db.scalar(select(User).where(User.id == user_id))
+
 def create_user(db: Session, email: str, full_name: str|None, is_active: bool=True):
     u = User(email=email, full_name=full_name, is_active=is_active)
     db.add(u)
