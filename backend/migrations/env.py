@@ -7,6 +7,7 @@ from app.models.base import Base
 import app.models.user
 import app.models.role
 import app.models.user_role
+import app.models.drop
 
 ENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
 print("RESOLVED ENV_PATH:", ENV_PATH, "exists:", os.path.exists(ENV_PATH))
