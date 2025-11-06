@@ -28,3 +28,4 @@ export default async function DropDetail({ params }: { params: { id: string } })
 }
 
 
+

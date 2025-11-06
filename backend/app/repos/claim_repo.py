@@ -42,3 +42,4 @@ def create_claim_if_available(db: Session, user_id: int, drop_id: int):
     return claim
 
 
+
