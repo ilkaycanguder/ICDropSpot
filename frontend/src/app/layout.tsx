@@ -1,10 +1,11 @@
 "use client";
 import "./globals.css";
 import { ReactNode, useEffect, useState } from "react";
-import { getUser, clearUser } from "@/lib/auth";
+import { getUser, clearUser, isAdmin } from "@/lib/auth";
+import type { User } from "@/lib/auth";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<{ id: number; email: string } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
     setUser(getUser());
   }, []);
@@ -31,12 +32,25 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           >
             <nav className='nav'>
               <a href='/drops'>Drops</a>
-              <a href='/admin/drops'>Admin</a>
+              {isAdmin(user) && <a href='/admin/drops'>Admin</a>}
             </nav>
             <div className='nav'>
               {user ? (
                 <>
                   <span className='muted'>{user.email}</span>
+                  {isAdmin(user) && (
+                    <span
+                      className='muted'
+                      style={{
+                        fontSize: 11,
+                        padding: "4px 8px",
+                        background: "var(--primary)",
+                        borderRadius: 4,
+                      }}
+                    >
+                      ADMIN
+                    </span>
+                  )}
                   <button className='btn secondary' onClick={logout}>
                     Çıkış
                   </button>
