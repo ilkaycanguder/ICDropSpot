@@ -14,24 +14,26 @@ export default async function DropsPage() {
   const drops = await apiGet<Drop[]>("/api/v1/drops");
   return (
     <div>
-      <h1>Drops</h1>
-      <ul style={{ padding: 0, listStyle: "none" }}>
+      <h1 style={{ marginTop: 0 }}>Drops</h1>
+      <div className="spacer" />
+      <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
         {drops.map((d) => (
-          <li key={d.id} style={{ padding: 12, border: "1px solid #eee", marginBottom: 8 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 8 }}>
+          <div key={d.id} className="card">
+            <div style={{ display:"flex", justifyContent:"space-between", alignItems:"start", gap: 8 }}>
               <div>
-                <div style={{ fontWeight: 600 }}>{d.title}</div>
-                <div style={{ color: "#666" }}>{d.description}</div>
-                <div style={{ fontSize: 12, color: "#999" }}>Stock: {d.stock}</div>
+                <div style={{ fontWeight: 700 }}>{d.title}</div>
+                <div className="muted">{d.description}</div>
               </div>
-              <div style={{ display: "flex", gap: 8 }}>
-                <Link href={`/drops/${d.id}`}>Detay</Link>
-                <Link href={`/claim/${d.id}`}>Claim</Link>
-              </div>
+              <span className="muted">Stock {d.stock}</span>
             </div>
-          </li>
+            <div className="spacer" />
+            <div className="row">
+              <Link className="btn secondary" href={`/drops/${d.id}`}>Detay</Link>
+              <Link className="btn" href={`/claim/${d.id}`}>Claim</Link>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
