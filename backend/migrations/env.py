@@ -9,6 +9,7 @@ import app.models.role
 import app.models.user_role
 import app.models.drop
 import app.models.waitlist
+import app.models.claim
 
 ENV_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
 print("RESOLVED ENV_PATH:", ENV_PATH, "exists:", os.path.exists(ENV_PATH))
