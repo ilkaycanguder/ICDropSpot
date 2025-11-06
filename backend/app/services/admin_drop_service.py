@@ -30,3 +30,4 @@ def delete_drop_dto(db: Session, drop_id: int):
     if not ok:
         raise ValueError("Drop not found")
 
+

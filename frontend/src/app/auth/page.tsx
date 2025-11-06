@@ -37,42 +37,38 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="container">
-      <div className="card" style={{ maxWidth: 480, margin: "40px auto" }}>
+    <div className='container'>
+      <div className='card' style={{ maxWidth: 480, margin: "40px auto" }}>
         <h1 style={{ marginTop: 0 }}>Giriş / Kayıt</h1>
-        <p className="muted">E-posta ile hızlıca kayıt ol veya giriş yap.</p>
-        <div className="spacer" />
-        <div className="row">
+        <p className='muted'>E-posta ile hızlıca kayıt ol veya giriş yap.</p>
+        <div className='spacer' />
+        <div className='row'>
           <input
-            className="input"
-            placeholder="E-posta"
+            className='input'
+            placeholder='E-posta'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             style={{ flex: 1 }}
           />
         </div>
-        <div className="spacer" />
-        <div className="row">
+        <div className='spacer' />
+        <div className='row'>
           <input
-            className="input"
-            placeholder="Ad Soyad (opsiyonel)"
+            className='input'
+            placeholder='Ad Soyad (opsiyonel)'
             value={name}
             onChange={(e) => setName(e.target.value)}
             style={{ flex: 1 }}
           />
         </div>
-        <div className="spacer" />
-        <div className="row">
-          <button
-            className="btn"
-            onClick={signup}
-            disabled={loading || !email}
-          >
+        <div className='spacer' />
+        <div className='row'>
+          <button className='btn' onClick={signup} disabled={loading || !email}>
             Devam
           </button>
         </div>
-        {msg && <div className="spacer" />}
-        {msg && <div className="muted">{msg}</div>}
+        {msg && <div className='spacer' />}
+        {msg && <div className='muted'>{msg}</div>}
       </div>
     </div>
   );

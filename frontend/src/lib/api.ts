@@ -1,7 +1,8 @@
 const base = process.env.NEXT_PUBLIC_API_BASE || "http://127.0.0.1:8000";
 
 export async function apiGet<T>(path: string): Promise<T> {
-  const r = await fetch(`${base}${path}`, { cache: "no-store" });
+  const opts: RequestInit = { cache: "no-store" };
+  const r = await fetch(`${base}${path}`, opts);
   if (!r.ok) throw new Error(`GET ${path} ${r.status}`);
   return r.json();
 }
@@ -30,5 +31,3 @@ export async function apiDelete(path: string): Promise<void> {
   const r = await fetch(`${base}${path}`, { method: "DELETE" });
   if (!r.ok) throw new Error(`DELETE ${path} ${r.status}`);
 }
-
-

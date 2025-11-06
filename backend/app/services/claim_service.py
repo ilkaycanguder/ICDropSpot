@@ -24,3 +24,4 @@ def claim_drop_dto(db: Session, user_id: int, drop_id: int):
     }
 
 
+
