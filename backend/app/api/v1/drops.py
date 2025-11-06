@@ -36,7 +36,6 @@ def leave_waitlist(drop_id: int, payload: WaitlistJoinIn, db: Session = Depends(
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-
 @router.post("/drops/{drop_id}/claim", response_model=ClaimOut, status_code=status.HTTP_201_CREATED)
 def claim_drop(drop_id: int, payload: ClaimIn, db: Session = Depends(get_db)):
     try:
@@ -48,4 +47,5 @@ def claim_drop(drop_id: int, payload: ClaimIn, db: Session = Depends(get_db)):
         if msg in ("Claim window closed", "Out of stock"):
             raise HTTPException(status_code=409, detail=msg)
         raise HTTPException(status_code=400, detail=msg)
+
 
