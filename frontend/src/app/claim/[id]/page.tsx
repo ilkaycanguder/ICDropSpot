@@ -50,15 +50,15 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
   return (
     <div>
       <h1>Claim</h1>
-      <div className='row'>
+      <div className="row">
         <button
-          className='btn secondary'
+          className="btn secondary"
           onClick={join}
           disabled={userId == null}
         >
           Waitlist Join
         </button>
-        <button className='btn' onClick={claim} disabled={userId == null}>
+        <button className="btn" onClick={claim} disabled={userId == null}>
           Claim
         </button>
       </div>

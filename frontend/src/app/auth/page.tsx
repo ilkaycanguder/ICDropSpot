@@ -17,14 +17,23 @@ export default function AuthPage() {
   }, [router]);
 
   async function signup() {
-    setLoading(true); setMsg("");
+    setLoading(true);
+    setMsg("");
     try {
-      const u = await apiPost<{ id:number; email:string; full_name?:string; roles?:string[] }>("/api/v1/auth/signup", { email, full_name: name });
-      saveUser(u); setMsg("Giriş başarılı, yönlendiriliyor...");
+      const u = await apiPost<{
+        id: number;
+        email: string;
+        full_name?: string;
+        roles?: string[];
+      }>("/api/v1/auth/signup", { email, full_name: name });
+      saveUser(u);
+      setMsg("Giriş başarılı, yönlendiriliyor...");
       setTimeout(() => router.push("/drops"), 500);
     } catch (e: any) {
       setMsg(e.message);
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -34,21 +43,37 @@ export default function AuthPage() {
         <p className="muted">E-posta ile hızlıca kayıt ol veya giriş yap.</p>
         <div className="spacer" />
         <div className="row">
-          <input className="input" placeholder="E-posta" value={email} onChange={(e)=>setEmail(e.target.value)} style={{ flex:1 }} />
+          <input
+            className="input"
+            placeholder="E-posta"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={{ flex: 1 }}
+          />
         </div>
         <div className="spacer" />
         <div className="row">
-          <input className="input" placeholder="Ad Soyad (opsiyonel)" value={name} onChange={(e)=>setName(e.target.value)} style={{ flex:1 }} />
+          <input
+            className="input"
+            placeholder="Ad Soyad (opsiyonel)"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={{ flex: 1 }}
+          />
         </div>
         <div className="spacer" />
         <div className="row">
-          <button className="btn" onClick={signup} disabled={loading || !email}>Devam</button>
+          <button
+            className="btn"
+            onClick={signup}
+            disabled={loading || !email}
+          >
+            Devam
+          </button>
         </div>
-        {msg && (<div className="spacer" />) }
-        {msg && (<div className="muted">{msg}</div>) }
+        {msg && <div className="spacer" />}
+        {msg && <div className="muted">{msg}</div>}
       </div>
     </div>
   );
 }
-
-
