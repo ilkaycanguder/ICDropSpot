@@ -4,7 +4,7 @@ from app.core.db import SessionLocal
 from app.schemas.drop import DropOut
 from app.schemas.waitlist import WaitlistJoinIn, WaitlistJoinOut
 from app.services.drop_service import list_active_drops_dto
-from app.services.waitlist_service import join_waitlist_dto
+from app.services.waitlist_service import join_waitlist_dto, leave_waitlist_dto
 
 router = APIRouter()
 
@@ -23,6 +23,14 @@ def list_drops(db: Session = Depends(get_db)):
 def join_waitlist(drop_id: int, payload: WaitlistJoinIn, db: Session = Depends(get_db)):
     try:
         return join_waitlist_dto(db, payload.user_id, drop_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.post("/drops/{drop_id}/leave", status_code=status.HTTP_204_NO_CONTENT)
+def leave_waitlist(drop_id: int, payload: WaitlistJoinIn, db: Session = Depends(get_db)):
+    try:
+        leave_waitlist_dto(db, payload.user_id, drop_id)
+        return
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
