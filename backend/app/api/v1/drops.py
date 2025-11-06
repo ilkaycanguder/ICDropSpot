@@ -26,7 +26,6 @@ def join_waitlist(drop_id: int, payload: WaitlistJoinIn, db: Session = Depends(g
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-
 @router.post("/drops/{drop_id}/leave", status_code=status.HTTP_204_NO_CONTENT)
 def leave_waitlist(drop_id: int, payload: WaitlistJoinIn, db: Session = Depends(get_db)):
     try:
