@@ -38,7 +38,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               {user ? (
                 <>
                   <span className='muted'>{user.email}</span>
-                  {isAdmin(user) && <span className='muted' style={{ fontSize: 11, padding: "4px 8px", background: "var(--primary)", borderRadius: 4 }}>ADMIN</span>}
+                  {isAdmin(user) && (
+                    <span
+                      className='muted'
+                      style={{
+                        fontSize: 11,
+                        padding: "4px 8px",
+                        background: "var(--primary)",
+                        borderRadius: 4,
+                      }}
+                    >
+                      ADMIN
+                    </span>
+                  )}
                   <button className='btn secondary' onClick={logout}>
                     Çıkış
                   </button>
