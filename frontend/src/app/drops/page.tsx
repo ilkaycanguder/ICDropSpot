@@ -129,7 +129,7 @@ export default function DropsPage() {
         <h1 style={{ marginTop: 0 }}>Drops</h1>
         <div className='spacer' />
         {drops.length === 0 ? (
-          <div className='card'>
+          <div className='card card--drop'>
             <p className='muted'>Henüz drop yok.</p>
           </div>
         ) : (
@@ -141,27 +141,20 @@ export default function DropsPage() {
             }}
           >
             {drops.map((d) => (
-              <div key={d.id} className='card'>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "start",
-                    gap: 8,
-                  }}
-                >
+              <div key={d.id} className='card card--drop'>
+                <div className='drop-card__meta'>
                   <div>
-                    <div style={{ fontWeight: 700 }}>{d.title}</div>
-                    <div className='muted' style={{ marginTop: 4 }}>
+                    <div className='drop-card__title'>{d.title}</div>
+                    <div className='drop-card__muted' style={{ marginTop: 4 }}>
                       {d.description || "Açıklama yok"}
                     </div>
                   </div>
-                  <span className='muted'>Stok {d.stock}</span>
+                  <span className='glow-badge'>Stok {d.stock}</span>
                 </div>
                 <div className='spacer' />
                 <div className='row'>
                   <button
-                    className='btn secondary'
+                    className='btn ghost'
                     onClick={() => setSelectedDrop(d)}
                     style={{ flex: 1 }}
                   >
