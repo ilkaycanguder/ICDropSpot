@@ -175,7 +175,6 @@ textarea {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .btn {
   background: var(--primary);
   color: white;
