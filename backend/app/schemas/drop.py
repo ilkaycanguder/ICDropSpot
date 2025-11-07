@@ -9,6 +9,9 @@ class DropOut(BaseModel):
     stock: int
     starts_at: datetime
     ends_at: datetime
+    is_active: bool
+    is_waitlist_open: bool
+    is_claim_open: bool
 
     class Config:
         from_attributes = True
