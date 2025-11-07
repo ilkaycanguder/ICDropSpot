@@ -97,6 +97,8 @@ export default function DropsPage() {
   const [drops, setDrops] = useState<Drop[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDrop, setSelectedDrop] = useState<Drop | null>(null);
+  const [page, setPage] = useState(1);
+  const pageSize = 12;
 
   useEffect(() => {
     document.title = "Drops | ICDropSpot";
@@ -140,7 +142,7 @@ export default function DropsPage() {
               gap: 16,
             }}
           >
-            {drops.map((d) => (
+            {drops.slice((page - 1) * pageSize, page * pageSize).map((d) => (
               <div key={d.id} className='card card--drop'>
                 <div className='drop-card__meta'>
                   <div>
@@ -171,6 +173,48 @@ export default function DropsPage() {
               </div>
             ))}
           </div>
+        )}
+
+        {/* Pagination */}
+        {drops.length > pageSize && (
+          <>
+            <div className='spacer' />
+            <div className='pagination'>
+              <button
+                className='page-btn'
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                aria-label='Önceki'
+              >
+                ◀
+              </button>
+              {Array.from(
+                { length: Math.ceil(drops.length / pageSize) },
+                (_, i) => i + 1
+              ).map((n) => (
+                <button
+                  key={n}
+                  className={`page-btn ${n === page ? "active" : ""}`}
+                  onClick={() => setPage(n)}
+                  aria-current={n === page ? "page" : undefined}
+                >
+                  {n}
+                </button>
+              ))}
+              <button
+                className='page-btn'
+                onClick={() =>
+                  setPage((p) =>
+                    Math.min(Math.ceil(drops.length / pageSize), p + 1)
+                  )
+                }
+                disabled={page === Math.ceil(drops.length / pageSize)}
+                aria-label='Sonraki'
+              >
+                ▶
+              </button>
+            </div>
+          </>
         )}
       </div>
       {selectedDrop && (
