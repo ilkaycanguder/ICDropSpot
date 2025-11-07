@@ -47,6 +47,18 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
     }
   }
 
+  async function leave() {
+    setError("");
+    setResult("");
+    try {
+      if (!userId) return;
+      await apiPost(`/api/v1/drops/${dropId}/leave`, { user_id: userId });
+      setResult("Waitlist'ten ayrıldınız.");
+    } catch (e: any) {
+      setError(e.message);
+    }
+  }
+
   return (
     <div>
       <h1>Claim</h1>
@@ -56,7 +68,14 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
           onClick={join}
           disabled={userId == null}
         >
-          Waitlist Join
+          Waitlist'e Katıl
+        </button>
+        <button
+          className='btn secondary'
+          onClick={leave}
+          disabled={userId == null}
+        >
+          Waitlist'ten Ayrıl
         </button>
         <button className='btn' onClick={claim} disabled={userId == null}>
           Claim
