@@ -46,4 +46,3 @@ def list_all_drops_dto(db: Session):
         for d in drops
     ]
 
-
