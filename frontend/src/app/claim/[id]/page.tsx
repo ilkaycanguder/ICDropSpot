@@ -3,6 +3,11 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiPost } from "@/lib/api";
 import { getUser } from "@/lib/auth";
+import {
+  addToWaitlist,
+  removeFromWaitlist,
+  isWaitlisted,
+} from "@/lib/waitlist";
 
 export default function ClaimPage({ params }: { params: { id: string } }) {
   const router = useRouter();
@@ -20,16 +25,25 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
       return;
     }
     setUserId(u.id);
-  }, [router]);
+    setJoined(isWaitlisted(u.id, dropId));
+  }, [router, dropId]);
 
-  async function join() {
+  async function toggleWaitlist() {
     setError("");
     setResult("");
     try {
       if (!userId) return;
-      await apiPost(`/api/v1/drops/${dropId}/join`, { user_id: userId });
-      setJoined(true);
-      setResult("Waitlist'e katıldınız. Claim hakkı açıldı.");
+      if (!joined) {
+        await apiPost(`/api/v1/drops/${dropId}/join`, { user_id: userId });
+        addToWaitlist(userId, dropId);
+        setJoined(true);
+        setResult("Waitlist'e katıldınız. Claim hakkı açıldı.");
+      } else {
+        await apiPost(`/api/v1/drops/${dropId}/leave`, { user_id: userId });
+        removeFromWaitlist(userId, dropId);
+        setJoined(false);
+        setResult("Waitlist'ten ayrıldınız. Claim hakkı kapandı.");
+      }
     } catch (e: any) {
       setError(e.message);
     }
@@ -40,6 +54,10 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
     setResult("");
     try {
       if (!userId) return;
+      if (!joined) {
+        setError("Claim için önce waitlist'e katılmalısınız.");
+        return;
+      }
       const c = await apiPost<{ code: string }>(
         `/api/v1/drops/${dropId}/claim`,
         { user_id: userId }
@@ -49,23 +67,11 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
       const msg = String(e?.message || "");
       if (msg.includes(" 404")) {
         setError("Claim hakkı bulunamadı. Lütfen önce waitlist'e katılın.");
+        if (userId) removeFromWaitlist(userId, dropId);
         setJoined(false);
       } else {
         setError(msg);
       }
-    }
-  }
-
-  async function leave() {
-    setError("");
-    setResult("");
-    try {
-      if (!userId) return;
-      await apiPost(`/api/v1/drops/${dropId}/leave`, { user_id: userId });
-      setJoined(false);
-      setResult("Waitlist'ten ayrıldınız. Claim hakkı kapandı.");
-    } catch (e: any) {
-      setError(e.message);
     }
   }
 
@@ -74,21 +80,14 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
       <h1>Claim</h1>
       <div className='row'>
         <button
-          className='btn secondary'
-          onClick={join}
-          disabled={userId == null || joined}
-        >
-          Waitlist'e Katıl
-        </button>
-        <button
-          className='btn secondary'
-          onClick={leave}
-          disabled={userId == null || !joined}
-        >
-          Waitlist'ten Ayrıl
-        </button>
-        <button
           className='btn'
+          onClick={toggleWaitlist}
+          disabled={userId == null}
+        >
+          {joined ? "Waitlist'ten Ayrıl" : "Waitlist'e Katıl"}
+        </button>
+        <button
+          className='btn ghost'
           onClick={claim}
           disabled={userId == null || !joined}
         >

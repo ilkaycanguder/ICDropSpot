@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { apiGet } from "@/lib/api";
+import { getUser } from "@/lib/auth";
+import { getWaitlistedDrops } from "@/lib/waitlist";
+import type { User } from "@/lib/auth";
 
 type Drop = {
   id: number;
@@ -99,6 +102,8 @@ export default function DropsPage() {
   const [selectedDrop, setSelectedDrop] = useState<Drop | null>(null);
   const [page, setPage] = useState(1);
   const pageSize = 12;
+  const [user, setUser] = useState<User | null>(null);
+  const [waitlisted, setWaitlisted] = useState<number[]>([]);
 
   useEffect(() => {
     document.title = "Drops | ICDropSpot";
@@ -113,6 +118,30 @@ export default function DropsPage() {
       }
     }
     load();
+  }, []);
+
+  useEffect(() => {
+    const u = getUser();
+    setUser(u);
+    if (u) {
+      setWaitlisted(getWaitlistedDrops(u.id));
+    }
+
+    function handleChange(event: Event) {
+      const custom = event as CustomEvent<{ userId: number; drops: number[] }>;
+      if (!custom.detail) return;
+      if (u && custom.detail.userId === u.id) {
+        setWaitlisted(custom.detail.drops ?? []);
+      }
+    }
+
+    window.addEventListener("waitlist-changed", handleChange as EventListener);
+    return () => {
+      window.removeEventListener(
+        "waitlist-changed",
+        handleChange as EventListener
+      );
+    };
   }, []);
 
   if (loading) {
@@ -152,6 +181,43 @@ export default function DropsPage() {
                     </div>
                   </div>
                   <span className='glow-badge'>Stok {d.stock}</span>
+                </div>
+                <div className='drop-card__statuses'>
+                  {user ? (
+                    <>
+                      <span
+                        className={`status-badge ${
+                          waitlisted.includes(d.id)
+                            ? "status-badge--active"
+                            : "status-badge--muted"
+                        }`}
+                      >
+                        {waitlisted.includes(d.id)
+                          ? "Waitlistte"
+                          : "Henüz katılmadı"}
+                      </span>
+                      <span
+                        className={`status-badge ${
+                          waitlisted.includes(d.id)
+                            ? "status-badge--claim"
+                            : "status-badge--muted"
+                        }`}
+                      >
+                        {waitlisted.includes(d.id)
+                          ? "Claim edilebilir"
+                          : "Claim pasif"}
+                      </span>
+                      {waitlisted.includes(d.id) && (
+                        <div className='drop-card__hint'>
+                          Waitlist'e katıldınız
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <span className='status-badge status-badge--muted'>
+                      Giriş yaparak waitlist'e katılın
+                    </span>
+                  )}
                 </div>
                 <div className='spacer' />
                 <div className='row'>
