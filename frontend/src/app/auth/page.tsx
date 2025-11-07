@@ -10,6 +10,7 @@ export default function AuthPage() {
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState("");
+  const [msgType, setMsgType] = useState<"error" | "success" | "">("");
 
   useEffect(() => {
     document.title = "Giriş / Kayıt | ICDropSpot";
@@ -17,10 +18,21 @@ export default function AuthPage() {
     if (u) router.push("/drops");
   }, [router]);
 
+  function isValidEmail(v: string): boolean {
+    // Basit email doğrulama (HTML input type=email ile birlikte)
+    return /.+@.+\..+/.test(v);
+  }
+
   async function signup() {
     setLoading(true);
     setMsg("");
+    setMsgType("");
     try {
+      if (!isValidEmail(email)) {
+        setMsg("Lütfen geçerli bir e-posta giriniz.");
+        setMsgType("error");
+        return;
+      }
       const u = await apiPost<{
         id: number;
         email: string;
@@ -29,9 +41,16 @@ export default function AuthPage() {
       }>("/api/v1/auth/signup", { email, full_name: name });
       saveUser(u);
       setMsg("Giriş başarılı, yönlendiriliyor...");
+      setMsgType("success");
       setTimeout(() => router.push("/drops"), 500);
     } catch (e: any) {
-      setMsg(e.message);
+      const m = String(e?.message || "");
+      if (m.includes("/api/v1/auth/signup") && m.includes(" 422")) {
+        setMsg("Lütfen geçerli bir e-posta giriniz.");
+      } else {
+        setMsg(m);
+      }
+      setMsgType("error");
     } finally {
       setLoading(false);
     }
@@ -39,7 +58,7 @@ export default function AuthPage() {
 
   return (
     <div className='container'>
-      <div className='card' style={{ maxWidth: 480, margin: "40px auto" }}>
+      <div className='card card--drop auth-card' style={{ maxWidth: 520, margin: "48px auto", padding: 24 }}>
         <h1 style={{ marginTop: 0 }}>Giriş / Kayıt</h1>
         <p className='muted'>E-posta ile hızlıca kayıt ol veya giriş yap.</p>
         <div className='spacer' />
@@ -47,6 +66,7 @@ export default function AuthPage() {
           <input
             className='input'
             placeholder='E-posta'
+            type='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             style={{ flex: 1 }}
@@ -69,7 +89,9 @@ export default function AuthPage() {
           </button>
         </div>
         {msg && <div className='spacer' />}
-        {msg && <div className='muted'>{msg}</div>}
+        {msg && (
+          <div className={`auth-msg ${msgType}`}>{msg}</div>
+        )}
       </div>
     </div>
   );
