@@ -12,6 +12,7 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
   const [error, setError] = useState<string>("");
 
   useEffect(() => {
+    document.title = "Claim | ICDropSpot";
     const u = getUser();
     if (!u) {
       router.push("/auth");

@@ -12,6 +12,7 @@ export default function AuthPage() {
   const [msg, setMsg] = useState("");
 
   useEffect(() => {
+    document.title = "Giriş / Kayıt | ICDropSpot";
     const u = getUser();
     if (u) router.push("/drops");
   }, [router]);

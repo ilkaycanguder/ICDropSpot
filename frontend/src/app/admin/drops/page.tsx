@@ -30,6 +30,7 @@ export default function AdminDropsPage() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    document.title = "Admin - Drops | ICDropSpot";
     const u = getUser();
     if (!u || !isAdmin(u)) {
       router.push("/drops");
@@ -142,8 +143,17 @@ export default function AdminDropsPage() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <h1 style={{ marginTop: 0, marginBottom: 0 }}>Admin Panel - Drops Yönetimi</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 24,
+        }}
+      >
+        <h1 style={{ marginTop: 0, marginBottom: 0 }}>
+          Admin Panel - Drops Yönetimi
+        </h1>
         <div style={{ fontSize: 13, color: "var(--text-muted)" }}>
           {editId ? `Düzenleniyor: #${editId}` : "Yeni Drop Oluştur"}
         </div>
@@ -159,92 +169,167 @@ export default function AdminDropsPage() {
         }}
       >
         <div
-          className="card"
+          className='card'
           style={{
-            background: "linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05))",
+            background:
+              "linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.05))",
             borderColor: "rgba(59, 130, 246, 0.3)",
           }}
         >
-          <div style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 8 }}>Toplam Drop</div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: "var(--primary)" }}>{stats.total}</div>
+          <div
+            style={{
+              fontSize: 13,
+              color: "var(--text-muted)",
+              marginBottom: 8,
+            }}
+          >
+            Toplam Drop
+          </div>
+          <div
+            style={{ fontSize: 32, fontWeight: 700, color: "var(--primary)" }}
+          >
+            {stats.total}
+          </div>
         </div>
         <div
-          className="card"
+          className='card'
           style={{
-            background: "linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05))",
+            background:
+              "linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 197, 94, 0.05))",
             borderColor: "rgba(34, 197, 94, 0.3)",
           }}
         >
-          <div style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 8 }}>Aktif Drop</div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: "#22c55e" }}>{stats.active}</div>
+          <div
+            style={{
+              fontSize: 13,
+              color: "var(--text-muted)",
+              marginBottom: 8,
+            }}
+          >
+            Aktif Drop
+          </div>
+          <div style={{ fontSize: 32, fontWeight: 700, color: "#22c55e" }}>
+            {stats.active}
+          </div>
         </div>
         <div
-          className="card"
+          className='card'
           style={{
-            background: "linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05))",
+            background:
+              "linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(168, 85, 247, 0.05))",
             borderColor: "rgba(168, 85, 247, 0.3)",
           }}
         >
-          <div style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 8 }}>Toplam Stok</div>
-          <div style={{ fontSize: 32, fontWeight: 700, color: "#a855f7" }}>{stats.totalStock}</div>
+          <div
+            style={{
+              fontSize: 13,
+              color: "var(--text-muted)",
+              marginBottom: 8,
+            }}
+          >
+            Toplam Stok
+          </div>
+          <div style={{ fontSize: 32, fontWeight: 700, color: "#a855f7" }}>
+            {stats.totalStock}
+          </div>
         </div>
       </div>
 
       {/* Form */}
-      <div className="card" style={{ marginBottom: 32 }}>
+      <div className='card' style={{ marginBottom: 32 }}>
         <h2 style={{ marginTop: 0, marginBottom: 20, fontSize: 18 }}>
           {editId ? `Drop Düzenle #${editId}` : "Yeni Drop Oluştur"}
         </h2>
         <div style={{ display: "grid", gap: 16, maxWidth: 700 }}>
           <div>
-            <label style={{ display: "block", marginBottom: 8, fontSize: 13, color: "var(--text-muted)" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: 8,
+                fontSize: 13,
+                color: "var(--text-muted)",
+              }}
+            >
               Başlık *
             </label>
             <input
-              className="input"
-              placeholder="Drop başlığı"
+              className='input'
+              placeholder='Drop başlığı'
               value={form.title}
               onChange={(e) => setForm({ ...form, title: e.target.value })}
               style={{ width: "100%" }}
             />
           </div>
           <div>
-            <label style={{ display: "block", marginBottom: 8, fontSize: 13, color: "var(--text-muted)" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: 8,
+                fontSize: 13,
+                color: "var(--text-muted)",
+              }}
+            >
               Açıklama
             </label>
             <textarea
-              className="input"
-              placeholder="Drop açıklaması"
+              className='input'
+              placeholder='Drop açıklaması'
               value={form.description}
-              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
               rows={4}
               style={{ resize: "vertical", width: "100%" }}
             />
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 120px", gap: 12 }}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 120px",
+              gap: 12,
+            }}
+          >
             <div>
-              <label style={{ display: "block", marginBottom: 8, fontSize: 13, color: "var(--text-muted)" }}>
+              <label
+                style={{
+                  display: "block",
+                  marginBottom: 8,
+                  fontSize: 13,
+                  color: "var(--text-muted)",
+                }}
+              >
                 Stok *
               </label>
               <input
-                className="input"
-                type="number"
-                placeholder="Stok miktarı"
+                className='input'
+                type='number'
+                placeholder='Stok miktarı'
                 value={form.stock}
-                onChange={(e) => setForm({ ...form, stock: Number(e.target.value) })}
-                min="1"
+                onChange={(e) =>
+                  setForm({ ...form, stock: Number(e.target.value) })
+                }
+                min='1'
                 style={{ width: "100%" }}
               />
             </div>
             <div>
-              <label style={{ display: "block", marginBottom: 8, fontSize: 13, color: "var(--text-muted)" }}>
+              <label
+                style={{
+                  display: "block",
+                  marginBottom: 8,
+                  fontSize: 13,
+                  color: "var(--text-muted)",
+                }}
+              >
                 Başlangıç Tarihi
               </label>
               <input
-                className="input"
-                type="datetime-local"
+                className='input'
+                type='datetime-local'
                 value={form.starts_at}
-                onChange={(e) => setForm({ ...form, starts_at: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, starts_at: e.target.value })
+                }
                 style={{ width: "100%" }}
               />
             </div>
@@ -264,9 +349,11 @@ export default function AdminDropsPage() {
                 }}
               >
                 <input
-                  type="checkbox"
+                  type='checkbox'
                   checked={form.is_active}
-                  onChange={(e) => setForm({ ...form, is_active: e.target.checked })}
+                  onChange={(e) =>
+                    setForm({ ...form, is_active: e.target.checked })
+                  }
                   style={{ cursor: "pointer" }}
                 />
                 <span style={{ fontSize: 13 }}>Aktif</span>
@@ -274,12 +361,19 @@ export default function AdminDropsPage() {
             </div>
           </div>
           <div>
-            <label style={{ display: "block", marginBottom: 8, fontSize: 13, color: "var(--text-muted)" }}>
+            <label
+              style={{
+                display: "block",
+                marginBottom: 8,
+                fontSize: 13,
+                color: "var(--text-muted)",
+              }}
+            >
               Bitiş Tarihi
             </label>
             <input
-              className="input"
-              type="datetime-local"
+              className='input'
+              type='datetime-local'
               value={form.ends_at}
               onChange={(e) => setForm({ ...form, ends_at: e.target.value })}
               style={{ width: "100%" }}
@@ -288,7 +382,7 @@ export default function AdminDropsPage() {
           <div style={{ display: "flex", gap: 12 }}>
             {!editId ? (
               <button
-                className="btn"
+                className='btn'
                 onClick={createDrop}
                 disabled={loading || !form.title}
                 style={{ minWidth: 120 }}
@@ -298,14 +392,18 @@ export default function AdminDropsPage() {
             ) : (
               <>
                 <button
-                  className="btn"
+                  className='btn'
                   onClick={updateDrop}
                   disabled={loading || !form.title}
                   style={{ minWidth: 120 }}
                 >
                   {loading ? "Güncelleniyor..." : "Güncelle"}
                 </button>
-                <button className="btn secondary" onClick={resetForm} disabled={loading}>
+                <button
+                  className='btn secondary'
+                  onClick={resetForm}
+                  disabled={loading}
+                >
                   İptal
                 </button>
               </>
@@ -320,7 +418,10 @@ export default function AdminDropsPage() {
                   msg.includes("❌") || msg.includes("yüklenemedi")
                     ? "rgba(239, 68, 68, 0.1)"
                     : "rgba(34, 197, 94, 0.1)",
-                color: msg.includes("❌") || msg.includes("yüklenemedi") ? "var(--danger)" : "#22c55e",
+                color:
+                  msg.includes("❌") || msg.includes("yüklenemedi")
+                    ? "var(--danger)"
+                    : "#22c55e",
                 border: `1px solid ${
                   msg.includes("❌") || msg.includes("yüklenemedi")
                     ? "rgba(239, 68, 68, 0.3)"
@@ -338,8 +439,8 @@ export default function AdminDropsPage() {
       <div>
         <h2 style={{ marginTop: 0, marginBottom: 16 }}>Mevcut Drops</h2>
         {drops.length === 0 ? (
-          <div className="card" style={{ textAlign: "center", padding: 48 }}>
-            <p className="muted" style={{ fontSize: 16, margin: 0 }}>
+          <div className='card' style={{ textAlign: "center", padding: 48 }}>
+            <p className='muted' style={{ fontSize: 16, margin: 0 }}>
               Henüz drop yok. Yukarıdan yeni bir drop oluşturun.
             </p>
           </div>
@@ -355,28 +456,92 @@ export default function AdminDropsPage() {
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead>
                 <tr style={{ borderBottom: "1px solid var(--border)" }}>
-                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "left",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     ID
                   </th>
-                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "left",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     Başlık
                   </th>
-                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "left",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     Açıklama
                   </th>
-                  <th style={{ padding: "12px 16px", textAlign: "center", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "center",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     Stok
                   </th>
-                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "left",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     Başlangıç
                   </th>
-                  <th style={{ padding: "12px 16px", textAlign: "left", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "left",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     Bitiş
                   </th>
-                  <th style={{ padding: "12px 16px", textAlign: "center", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "center",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     Durum
                   </th>
-                  <th style={{ padding: "12px 16px", textAlign: "center", fontSize: 13, color: "var(--text-muted)", fontWeight: 600 }}>
+                  <th
+                    style={{
+                      padding: "12px 16px",
+                      textAlign: "center",
+                      fontSize: 13,
+                      color: "var(--text-muted)",
+                      fontWeight: 600,
+                    }}
+                  >
                     İşlemler
                   </th>
                 </tr>
@@ -386,7 +551,10 @@ export default function AdminDropsPage() {
                   <tr
                     key={d.id}
                     style={{
-                      borderBottom: idx < drops.length - 1 ? "1px solid var(--border)" : "none",
+                      borderBottom:
+                        idx < drops.length - 1
+                          ? "1px solid var(--border)"
+                          : "none",
                       transition: "background 0.2s",
                     }}
                     onMouseEnter={(e) => {
@@ -396,21 +564,52 @@ export default function AdminDropsPage() {
                       e.currentTarget.style.background = "transparent";
                     }}
                   >
-                    <td style={{ padding: "12px 16px", fontSize: 13, color: "var(--text-muted)" }}>#{d.id}</td>
-                    <td style={{ padding: "12px 16px", fontWeight: 600 }}>{d.title}</td>
-                    <td style={{ padding: "12px 16px", fontSize: 13, color: "var(--text-muted)", maxWidth: 300 }}>
+                    <td
+                      style={{
+                        padding: "12px 16px",
+                        fontSize: 13,
+                        color: "var(--text-muted)",
+                      }}
+                    >
+                      #{d.id}
+                    </td>
+                    <td style={{ padding: "12px 16px", fontWeight: 600 }}>
+                      {d.title}
+                    </td>
+                    <td
+                      style={{
+                        padding: "12px 16px",
+                        fontSize: 13,
+                        color: "var(--text-muted)",
+                        maxWidth: 300,
+                      }}
+                    >
                       {d.description || "-"}
                     </td>
-                    <td style={{ padding: "12px 16px", textAlign: "center", fontWeight: 600 }}>{d.stock}</td>
-                    <td style={{ padding: "12px 16px", fontSize: 13 }}>{formatDateTime(d.starts_at)}</td>
-                    <td style={{ padding: "12px 16px", fontSize: 13 }}>{formatDateTime(d.ends_at)}</td>
+                    <td
+                      style={{
+                        padding: "12px 16px",
+                        textAlign: "center",
+                        fontWeight: 600,
+                      }}
+                    >
+                      {d.stock}
+                    </td>
+                    <td style={{ padding: "12px 16px", fontSize: 13 }}>
+                      {formatDateTime(d.starts_at)}
+                    </td>
+                    <td style={{ padding: "12px 16px", fontSize: 13 }}>
+                      {formatDateTime(d.ends_at)}
+                    </td>
                     <td style={{ padding: "12px 16px", textAlign: "center" }}>
                       <span
                         style={{
                           fontSize: 11,
                           padding: "4px 10px",
                           borderRadius: 12,
-                          background: d.is_active ? "rgba(34, 197, 94, 0.15)" : "rgba(107, 114, 128, 0.15)",
+                          background: d.is_active
+                            ? "rgba(34, 197, 94, 0.15)"
+                            : "rgba(107, 114, 128, 0.15)",
                           color: d.is_active ? "#22c55e" : "var(--text-muted)",
                           fontWeight: 600,
                         }}
@@ -419,9 +618,15 @@ export default function AdminDropsPage() {
                       </span>
                     </td>
                     <td style={{ padding: "12px 16px" }}>
-                      <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: 8,
+                          justifyContent: "center",
+                        }}
+                      >
                         <button
-                          className="btn secondary"
+                          className='btn secondary'
                           onClick={() => startEdit(d)}
                           disabled={loading}
                           style={{ fontSize: 12, padding: "6px 12px" }}
@@ -429,7 +634,7 @@ export default function AdminDropsPage() {
                           Düzenle
                         </button>
                         <button
-                          className="btn danger"
+                          className='btn danger'
                           onClick={() => deleteDrop(d.id)}
                           disabled={loading}
                           style={{ fontSize: 12, padding: "6px 12px" }}
