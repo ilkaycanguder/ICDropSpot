@@ -14,6 +14,8 @@ const KEY = "icdropspot:user";
 export function saveUser(u: User) {
   if (typeof window === "undefined") return;
   localStorage.setItem(KEY, JSON.stringify(u));
+  // Custom event to notify layout about user change
+  window.dispatchEvent(new CustomEvent("user-changed", { detail: u }));
 }
 
 export function getUser(): User | null {
@@ -30,4 +32,6 @@ export function getUser(): User | null {
 export function clearUser() {
   if (typeof window === "undefined") return;
   localStorage.removeItem(KEY);
+  // Custom event to notify layout about user change
+  window.dispatchEvent(new CustomEvent("user-changed", { detail: null }));
 }

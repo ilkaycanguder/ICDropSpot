@@ -6,8 +6,21 @@ import type { User } from "@/lib/auth";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  
   useEffect(() => {
+    // Initial load
     setUser(getUser());
+    
+    // Listen for user changes (login/logout)
+    const handleUserChange = (e: CustomEvent<User | null>) => {
+      setUser(e.detail);
+    };
+    
+    window.addEventListener("user-changed", handleUserChange as EventListener);
+    
+    return () => {
+      window.removeEventListener("user-changed", handleUserChange as EventListener);
+    };
   }, []);
 
   function logout() {
