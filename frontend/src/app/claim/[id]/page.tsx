@@ -10,6 +10,7 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
   const [userId, setUserId] = useState<number | null>(null);
   const [result, setResult] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [joined, setJoined] = useState(false);
 
   useEffect(() => {
     document.title = "Claim | ICDropSpot";
@@ -27,7 +28,8 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
     try {
       if (!userId) return;
       await apiPost(`/api/v1/drops/${dropId}/join`, { user_id: userId });
-      setResult("Waitlist joined.");
+      setJoined(true);
+      setResult("Waitlist'e katıldınız. Claim hakkı açıldı.");
     } catch (e: any) {
       setError(e.message);
     }
@@ -44,7 +46,13 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
       );
       setResult(`Claim code: ${c.code}`);
     } catch (e: any) {
-      setError(e.message);
+      const msg = String(e?.message || "");
+      if (msg.includes(" 404")) {
+        setError("Claim hakkı bulunamadı. Lütfen önce waitlist'e katılın.");
+        setJoined(false);
+      } else {
+        setError(msg);
+      }
     }
   }
 
@@ -54,7 +62,8 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
     try {
       if (!userId) return;
       await apiPost(`/api/v1/drops/${dropId}/leave`, { user_id: userId });
-      setResult("Waitlist'ten ayrıldınız.");
+      setJoined(false);
+      setResult("Waitlist'ten ayrıldınız. Claim hakkı kapandı.");
     } catch (e: any) {
       setError(e.message);
     }
@@ -67,18 +76,22 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
         <button
           className='btn secondary'
           onClick={join}
-          disabled={userId == null}
+          disabled={userId == null || joined}
         >
           Waitlist'e Katıl
         </button>
         <button
           className='btn secondary'
           onClick={leave}
-          disabled={userId == null}
+          disabled={userId == null || !joined}
         >
           Waitlist'ten Ayrıl
         </button>
-        <button className='btn' onClick={claim} disabled={userId == null}>
+        <button
+          className='btn'
+          onClick={claim}
+          disabled={userId == null || !joined}
+        >
           Claim
         </button>
       </div>
