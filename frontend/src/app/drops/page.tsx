@@ -142,9 +142,7 @@ export default function DropsPage() {
               gap: 16,
             }}
           >
-            {drops
-              .slice((page - 1) * pageSize, page * pageSize)
-              .map((d) => (
+            {drops.slice((page - 1) * pageSize, page * pageSize).map((d) => (
               <div key={d.id} className='card card--drop'>
                 <div className='drop-card__meta'>
                   <div>
@@ -190,22 +188,25 @@ export default function DropsPage() {
               >
                 ◀
               </button>
-              {Array.from({ length: Math.ceil(drops.length / pageSize) }, (_, i) => i + 1).map(
-                (n) => (
-                  <button
-                    key={n}
-                    className={`page-btn ${n === page ? "active" : ""}`}
-                    onClick={() => setPage(n)}
-                    aria-current={n === page ? "page" : undefined}
-                  >
-                    {n}
-                  </button>
-                )
-              )}
+              {Array.from(
+                { length: Math.ceil(drops.length / pageSize) },
+                (_, i) => i + 1
+              ).map((n) => (
+                <button
+                  key={n}
+                  className={`page-btn ${n === page ? "active" : ""}`}
+                  onClick={() => setPage(n)}
+                  aria-current={n === page ? "page" : undefined}
+                >
+                  {n}
+                </button>
+              ))}
               <button
                 className='page-btn'
                 onClick={() =>
-                  setPage((p) => Math.min(Math.ceil(drops.length / pageSize), p + 1))
+                  setPage((p) =>
+                    Math.min(Math.ceil(drops.length / pageSize), p + 1)
+                  )
                 }
                 disabled={page === Math.ceil(drops.length / pageSize)}
                 aria-label='Sonraki'

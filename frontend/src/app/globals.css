@@ -157,13 +157,19 @@ textarea {
 }
 .page-btn:hover {
   border-color: rgba(59, 130, 246, 0.5);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.08) inset, 0 6px 18px rgba(59, 130, 246, 0.12);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.08) inset,
+    0 6px 18px rgba(59, 130, 246, 0.12);
   transform: translateY(-1px);
 }
 .page-btn.active {
-  background: linear-gradient(90deg, rgba(59, 130, 246, 0.18), rgba(168, 85, 247, 0.18));
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.18),
+    rgba(168, 85, 247, 0.18)
+  );
   border-color: rgba(59, 130, 246, 0.55);
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12) inset, 0 8px 24px rgba(168, 85, 247, 0.16);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.12) inset,
+    0 8px 24px rgba(168, 85, 247, 0.16);
 }
 .page-btn:disabled {
   opacity: 0.5;
