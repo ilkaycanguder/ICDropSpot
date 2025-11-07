@@ -12,6 +12,12 @@ def list_active_drops(db: Session):
         .where(Drop.ends_at >= now)
     )
     return db.execute(stmt).scalars().all()
+
+def list_all_drops(db: Session):
+    """List all drops (for admin panel)"""
+    stmt = select(Drop).order_by(Drop.id.desc())
+    return db.execute(stmt).scalars().all()
+
 def get_drop_by_id(db: Session, drop_id: int):
     return db.scalar(select(Drop).where(Drop.id == drop_id))
 

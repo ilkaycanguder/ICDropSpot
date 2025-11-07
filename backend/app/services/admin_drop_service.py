@@ -1,6 +1,6 @@
 from datetime import datetime
 from sqlalchemy.orm import Session
-from app.repos.drop_repo import create_drop, update_drop, delete_drop, get_drop_by_id
+from app.repos.drop_repo import create_drop, update_drop, delete_drop, get_drop_by_id, list_all_drops
 
 def _validate_window(starts_at: datetime, ends_at: datetime):
     if starts_at >= ends_at:
@@ -30,4 +30,19 @@ def delete_drop_dto(db: Session, drop_id: int):
     if not ok:
         raise ValueError("Drop not found")
 
+def list_all_drops_dto(db: Session):
+    """List all drops with is_active field (for admin panel)"""
+    drops = list_all_drops(db)
+    return [
+        {
+            "id": d.id,
+            "title": d.title,
+            "description": d.description,
+            "stock": d.stock,
+            "starts_at": d.starts_at,
+            "ends_at": d.ends_at,
+            "is_active": d.is_active,
+        }
+        for d in drops
+    ]
 
