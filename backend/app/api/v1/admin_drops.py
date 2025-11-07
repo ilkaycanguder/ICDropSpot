@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.core.db import SessionLocal
 from app.schemas.admin_drop import AdminDropCreate, AdminDropUpdate, AdminDropOut
-from app.services.admin_drop_service import create_drop_dto, update_drop_dto, delete_drop_dto
+from app.services.admin_drop_service import create_drop_dto, update_drop_dto, delete_drop_dto, list_all_drops_dto
 
 router = APIRouter()
 
@@ -12,6 +12,11 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@router.get("/admin/drops", response_model=list[AdminDropOut])
+def admin_list_drops(db: Session = Depends(get_db)):
+    """List all drops (for admin panel)"""
+    return list_all_drops_dto(db)
 
 @router.post("/admin/drops", response_model=AdminDropOut, status_code=status.HTTP_201_CREATED)
 def admin_create_drop(payload: AdminDropCreate, db: Session = Depends(get_db)):

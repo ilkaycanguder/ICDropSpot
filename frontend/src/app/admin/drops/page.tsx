@@ -40,7 +40,7 @@ export default function AdminDropsPage() {
 
   async function load() {
     try {
-      setDrops(await apiGet<Drop[]>("/api/v1/drops"));
+      setDrops(await apiGet<Drop[]>("/api/v1/admin/drops"));
     } catch (e: any) {
       setMsg("Drops yüklenemedi: " + e.message);
     }
