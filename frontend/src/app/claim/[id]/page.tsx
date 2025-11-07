@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { apiPost } from "@/lib/api";
+import { apiPost, apiGet } from "@/lib/api";
 import { getUser } from "@/lib/auth";
 import {
   addToWaitlist,
@@ -16,6 +16,8 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
   const [result, setResult] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [joined, setJoined] = useState(false);
+  const [claimOpen, setClaimOpen] = useState(false);
+  const [waitlistOpen, setWaitlistOpen] = useState(true);
 
   useEffect(() => {
     document.title = "Claim | ICDropSpot";
@@ -28,6 +30,30 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
     setJoined(isWaitlisted(u.id, dropId));
   }, [router, dropId]);
 
+  useEffect(() => {
+    async function loadDrop() {
+      try {
+        const drops = await apiGet<
+          Array<{
+            id: number;
+            is_claim_open: boolean;
+            is_waitlist_open: boolean;
+          }>
+        >("/api/v1/drops");
+        const found = drops.find((d) => d.id === dropId);
+        if (found) {
+          setClaimOpen(found.is_claim_open);
+          setWaitlistOpen(found.is_waitlist_open);
+        } else {
+          setClaimOpen(false);
+          setWaitlistOpen(false);
+        }
+      } catch {
+        setClaimOpen(false);
+      }
+    }
+    loadDrop();
+  }, [dropId]);
   async function toggleWaitlist() {
     setError("");
     setResult("");
@@ -58,6 +84,10 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
         setError("Claim için önce waitlist'e katılmalısınız.");
         return;
       }
+      if (!claimOpen) {
+        setError("Claim penceresi henüz açılmadı.");
+        return;
+      }
       const c = await apiPost<{ code: string }>(
         `/api/v1/drops/${dropId}/claim`,
         { user_id: userId }
@@ -82,14 +112,14 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
         <button
           className='btn'
           onClick={toggleWaitlist}
-          disabled={userId == null}
+          disabled={userId == null || !waitlistOpen}
         >
           {joined ? "Waitlist'ten Ayrıl" : "Waitlist'e Katıl"}
         </button>
         <button
           className='btn ghost'
           onClick={claim}
-          disabled={userId == null || !joined}
+          disabled={userId == null || !joined || !claimOpen}
         >
           Claim
         </button>

@@ -153,6 +153,11 @@ textarea {
   background: rgba(36, 42, 51, 0.6);
   color: var(--text-muted);
 }
+.status-badge--closed {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.12);
+  color: #fecaca;
+}
 
 .drop-card__hint {
   font-size: 12px;
@@ -222,6 +227,19 @@ textarea {
 .page-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.drops-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .drops-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
 }
 .btn {
   background: var(--primary);

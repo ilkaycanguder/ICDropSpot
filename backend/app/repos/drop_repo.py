@@ -8,8 +8,8 @@ def list_active_drops(db: Session):
     stmt = (
         select(Drop)
         .where(Drop.is_active == True)
-        .where(Drop.starts_at <= now)
         .where(Drop.ends_at >= now)
+        .order_by(Drop.starts_at.asc())
     )
     return db.execute(stmt).scalars().all()
 
