@@ -104,7 +104,7 @@ export default function DropsPage() {
   const [loading, setLoading] = useState(true);
   const [selectedDrop, setSelectedDrop] = useState<Drop | null>(null);
   const [page, setPage] = useState(1);
-  const pageSize = 12;
+  const [pageSize, setPageSize] = useState(9);
   const [user, setUser] = useState<User | null>(null);
   const [waitlisted, setWaitlisted] = useState<number[]>([]);
 
@@ -147,6 +147,17 @@ export default function DropsPage() {
     };
   }, []);
 
+  useEffect(() => {
+    function handleResponsivePageSize() {
+      const mobile = window.innerWidth <= 768;
+      setPageSize(mobile ? 3 : 9);
+      setPage(1);
+    }
+    handleResponsivePageSize();
+    window.addEventListener("resize", handleResponsivePageSize);
+    return () => window.removeEventListener("resize", handleResponsivePageSize);
+  }, []);
+
   if (loading) {
     return (
       <div>
@@ -167,13 +178,7 @@ export default function DropsPage() {
             <p className='muted'>Henüz drop yok.</p>
           </div>
         ) : (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-              gap: 16,
-            }}
-          >
+          <div className='drops-grid'>
             {drops.slice((page - 1) * pageSize, page * pageSize).map((d) => {
               const isWaitlisted = waitlisted.includes(d.id);
               const claimOpen = d.is_claim_open;
