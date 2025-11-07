@@ -54,7 +54,6 @@ export default function ClaimPage({ params }: { params: { id: string } }) {
     }
     loadDrop();
   }, [dropId]);
-
   async function toggleWaitlist() {
     setError("");
     setResult("");

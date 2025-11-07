@@ -157,7 +157,6 @@ export default function DropsPage() {
     window.addEventListener("resize", handleResponsivePageSize);
     return () => window.removeEventListener("resize", handleResponsivePageSize);
   }, []);
-
   if (loading) {
     return (
       <div>
@@ -201,10 +200,7 @@ export default function DropsPage() {
                   <div className='drop-card__meta'>
                     <div>
                       <div className='drop-card__title'>{d.title}</div>
-                      <div
-                        className='drop-card__muted'
-                        style={{ marginTop: 4 }}
-                      >
+                      <div className='drop-card__muted' style={{ marginTop: 4 }}>
                         {d.description || "Açıklama yok"}
                       </div>
                     </div>
