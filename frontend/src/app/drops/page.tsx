@@ -13,6 +13,9 @@ type Drop = {
   stock: number;
   starts_at: string;
   ends_at: string;
+  is_active: boolean;
+  is_waitlist_open: boolean;
+  is_claim_open: boolean;
 };
 
 function formatDateTime(iso: string): string {
@@ -171,73 +174,100 @@ export default function DropsPage() {
               gap: 16,
             }}
           >
-            {drops.slice((page - 1) * pageSize, page * pageSize).map((d) => (
-              <div key={d.id} className='card card--drop'>
-                <div className='drop-card__meta'>
-                  <div>
-                    <div className='drop-card__title'>{d.title}</div>
-                    <div className='drop-card__muted' style={{ marginTop: 4 }}>
-                      {d.description || "Açıklama yok"}
+            {drops.slice((page - 1) * pageSize, page * pageSize).map((d) => {
+              const isWaitlisted = waitlisted.includes(d.id);
+              const claimOpen = d.is_claim_open;
+              const waitlistOpen = d.is_waitlist_open;
+
+              const waitlistStatus = !waitlistOpen
+                ? "Waitlist kapalı"
+                : isWaitlisted
+                ? "Waitlistte"
+                : "Henüz katılmadı";
+
+              const claimStatus = claimOpen
+                ? isWaitlisted
+                  ? "Claim edilebilir"
+                  : "Claim için waitlist"
+                : "Claim penceresi kapalı";
+
+              return (
+                <div key={d.id} className='card card--drop'>
+                  <div className='drop-card__meta'>
+                    <div>
+                      <div className='drop-card__title'>{d.title}</div>
+                      <div className='drop-card__muted' style={{ marginTop: 4 }}>
+                        {d.description || "Açıklama yok"}
+                      </div>
                     </div>
+                    <span className='glow-badge'>Stok {d.stock}</span>
                   </div>
-                  <span className='glow-badge'>Stok {d.stock}</span>
-                </div>
-                <div className='drop-card__statuses'>
-                  {user ? (
-                    <>
-                      <span
-                        className={`status-badge ${
-                          waitlisted.includes(d.id)
-                            ? "status-badge--active"
-                            : "status-badge--muted"
-                        }`}
-                      >
-                        {waitlisted.includes(d.id)
-                          ? "Waitlistte"
-                          : "Henüz katılmadı"}
+                  <div className='drop-card__statuses'>
+                    {user ? (
+                      <>
+                        <span
+                          className={`status-badge ${
+                            isWaitlisted
+                              ? "status-badge--active"
+                              : waitlistOpen
+                              ? "status-badge--muted"
+                              : "status-badge--closed"
+                          }`}
+                        >
+                          {waitlistStatus}
+                        </span>
+                        <span
+                          className={`status-badge ${
+                            claimOpen
+                              ? "status-badge--claim"
+                              : "status-badge--muted"
+                          }`}
+                        >
+                          {claimStatus}
+                        </span>
+                        {isWaitlisted && (
+                          <div className='drop-card__hint'>
+                            Waitlist'e katıldınız
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <span className='status-badge status-badge--muted'>
+                        Giriş yaparak waitlist'e katılın
                       </span>
-                      <span
-                        className={`status-badge ${
-                          waitlisted.includes(d.id)
-                            ? "status-badge--claim"
-                            : "status-badge--muted"
-                        }`}
+                    )}
+                  </div>
+                  <div className='spacer' />
+                  <div className='row'>
+                    <button
+                      className='btn ghost'
+                      onClick={() => setSelectedDrop(d)}
+                      style={{ flex: 1 }}
+                    >
+                      Detay
+                    </button>
+                    {claimOpen ? (
+                      <Link
+                        className='btn'
+                        href={`/claim/${d.id}`}
+                        style={{ flex: 1, textAlign: "center" }}
                       >
-                        {waitlisted.includes(d.id)
-                          ? "Claim edilebilir"
-                          : "Claim pasif"}
-                      </span>
-                      {waitlisted.includes(d.id) && (
-                        <div className='drop-card__hint'>
-                          Waitlist'e katıldınız
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <span className='status-badge status-badge--muted'>
-                      Giriş yaparak waitlist'e katılın
-                    </span>
-                  )}
+                        Claim
+                      </Link>
+                    ) : (
+                      <button
+                        className='btn'
+                        style={{ flex: 1 }}
+                        disabled
+                        title='Claim penceresi henüz açılmadı'
+                      >
+                        Claim
+                      </button>
+                    )}
+                  </div>
                 </div>
-                <div className='spacer' />
-                <div className='row'>
-                  <button
-                    className='btn ghost'
-                    onClick={() => setSelectedDrop(d)}
-                    style={{ flex: 1 }}
-                  >
-                    Detay
-                  </button>
-                  <Link
-                    className='btn'
-                    href={`/claim/${d.id}`}
-                    style={{ flex: 1, textAlign: "center" }}
-                  >
-                    Claim
-                  </Link>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
