@@ -99,6 +99,7 @@ export default function DropsPage() {
   const [selectedDrop, setSelectedDrop] = useState<Drop | null>(null);
 
   useEffect(() => {
+    document.title = "Drops | ICDropSpot";
     async function load() {
       try {
         const data = await apiGet<Drop[]>("/api/v1/drops");
